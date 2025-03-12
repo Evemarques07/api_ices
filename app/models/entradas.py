@@ -3,13 +3,17 @@ from sqlalchemy.orm import relationship
 from database import Base
 import enum
 
-class TipoEntrada(enum.Enum):
+class TipoEntrada(enum.Enum):   
     Dizimos = "Dizimos"
     Ofertas = "Ofertas"
+    Ofertas_Missionarias = "Ofertas_Missionarias"
     Campanhas = "Campanhas"
     Eventos = "Eventos"
-    Alugueis = "Alugueis"
-    Doacoes = "Doacoes"
+    Venda_Materiais = "Venda_Materiais"
+    Doacoes_Empresas = "Doacoes_Empresas"
+    Parcerias_Ongs = "Parcerias_Ongs"
+    Apoio_Outras_Igrejas = "Apoio_Outras_Igrejas"
+    Investimentos = "Investimentos"
 
 class Entrada(Base):
     __tablename__ = "entradas"

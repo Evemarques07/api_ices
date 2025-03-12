@@ -30,7 +30,7 @@ def init_db():
             # Criar o membro "Adão"
             membro_adao = membros.Membro(
                 nomeCompleto="Adão",
-                cpf="111.111.111-11",  # CPF fictício
+                cpf="11111111111",  # CPF fictício
                 dataNascimento="1990-01-01",  # Data de nascimento fictícia
                 telefone="11-1111-1111",  # Telefone fictício
                 rua="Rua Principal",

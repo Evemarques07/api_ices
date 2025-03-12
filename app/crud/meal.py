@@ -1,15 +1,15 @@
 from sqlalchemy.orm import Session
-from app.models import meal
+from app.models import meal as meal_model 
 from app.schemas import meal as meal_schemas
 
 def get_meal(db: Session, meal_id: int):
-    return db.query(meal.Meal).filter(meal.Meal.idMeal == meal_id).first()
+    return db.query(meal_model.Meal).filter(meal_model.Meal.idMeal == meal_id).first()
 
 def get_meals(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(meal.Meal).offset(skip).limit(limit).all()
+    return db.query(meal_model.Meal).offset(skip).limit(limit).all()
 
 def create_meal(db: Session, meal: meal_schemas.MealCreate):
-    db_meal = meal.Meal(**meal.dict())
+    db_meal = meal_model.Meal(**meal.dict()) 
     db.add(db_meal)
     db.commit()
     db.refresh(db_meal)
