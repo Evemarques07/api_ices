@@ -282,4 +282,6 @@ Este guia fornece o básico para configurar e executar a sua API. Adapte-o de ac
 *   **Adaptação:** Incentive os usuários a adaptar a documentação às suas necessidades.
 
 **Nota sobre Meal:** *Meal é a sigla de Mesa Executiva Administrativa Local, ou seja, a liderança local da igreja que pode ser composta por presidente, secretário, tesoureiro, diácono, entre outros.*
+
+**Observação:** A API inicia criando automaticamente um usuário inicial chamado "Adão" com o cargo de "Senior". As credenciais de acesso são: Login: "Adão" e Senha: "123456". Utilize este usuário para autenticar-se e inserir outros registros na API.
 ```

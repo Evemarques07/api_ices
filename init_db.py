@@ -45,11 +45,11 @@ def init_db():
             db.refresh(membro_adao)
 
         # 3. Verificar se o usuário "Adão" já existe.
-        usuario_adao = db.query(usuarios.Usuario).filter(usuarios.Usuario.login == "adao").first()
+        usuario_adao = db.query(usuarios.Usuario).filter(usuarios.Usuario.login == "Adão").first()
         if not usuario_adao:
             # Criar o usuário "Adão"
             hashed_password = get_password_hash("123456")
-            usuario_adao = usuarios.Usuario(login="adao", password=hashed_password, idMembro=membro_adao.idMembro)
+            usuario_adao = usuarios.Usuario(login="Adão", password=hashed_password, idMembro=membro_adao.idMembro)
             db.add(usuario_adao)
             db.commit()
             db.refresh(usuario_adao)

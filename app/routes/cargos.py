@@ -6,10 +6,11 @@ from sqlalchemy.orm import Session
 from app.crud import cargos as cargos_crud
 from app.schemas import cargos as cargos_schemas
 from database import get_db
+from app.core.security import check_senior_presidente_secretario
 
 router = APIRouter()
 
-@router.post("/", response_model=cargos_schemas.Cargo)
+@router.post("/", response_model=cargos_schemas.Cargo, dependencies=[Depends(check_senior_presidente_secretario)])
 def create_cargo(cargo: cargos_schemas.CargoCreate, db: Session = Depends(get_db)):
     return cargos_crud.create_cargo(db=db, cargo=cargo)
 
@@ -25,14 +26,14 @@ def read_cargo(cargo_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Cargo not found")
     return db_cargo
 
-@router.put("/{cargo_id}", response_model=cargos_schemas.Cargo)
+@router.put("/{cargo_id}", response_model=cargos_schemas.Cargo, dependencies=[Depends(check_senior_presidente_secretario)])
 def update_cargo(cargo_id: int, cargo: cargos_schemas.CargoUpdate, db: Session = Depends(get_db)):
     db_cargo = cargos_crud.update_cargo(db, cargo_id=cargo_id, cargo_update=cargo)
     if db_cargo is None:
         raise HTTPException(status_code=404, detail="Cargo not found")
     return db_cargo
 
-@router.delete("/{cargo_id}")
+@router.delete("/{cargo_id}", dependencies=[Depends(check_senior_presidente_secretario)])
 def delete_cargo(cargo_id: int, db: Session = Depends(get_db)):
     db_cargo = cargos_crud.delete_cargo(db, cargo_id=cargo_id)
     if db_cargo is None:

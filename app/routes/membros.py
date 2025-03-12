@@ -2,6 +2,7 @@ from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from app.core.security import check_senior_presidente_secretario
 
 from app.crud import membros as membros_crud
 from app.schemas import membros as membros_schemas
@@ -9,7 +10,7 @@ from database import get_db
 
 router = APIRouter()
 
-@router.post("/", response_model=membros_schemas.Membro)
+@router.post("/", response_model=membros_schemas.Membro, dependencies=[Depends(check_senior_presidente_secretario)])
 def create_membro(membro: membros_schemas.MembroCreate, db: Session = Depends(get_db)):
     db_membro = membros_crud.get_membro_by_cpf(db, cpf=membro.cpf)
     if db_membro:
@@ -28,15 +29,15 @@ def read_membro(membro_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Membro not found")
     return db_membro
 
-@router.put("/{membro_id}", response_model=membros_schemas.Membro)
+@router.put("/{membro_id}", response_model=membros_schemas.Membro, dependencies=[Depends(check_senior_presidente_secretario)])
 def update_membro(membro_id: int, membro: membros_schemas.MembroUpdate, db: Session = Depends(get_db)):
     db_membro = membros_crud.update_membro(db, membro_id=membro_id, membro_update=membro)
     if db_membro is None:
         raise HTTPException(status_code=404, detail="Membro not found")
     return db_membro
 
-@router.delete("/{membro_id}")
-def delete_membro(membro_id: int, db: Session = Depends(get_db)):
+@router.delete("/{membro_id}", dependencies=[Depends(check_senior_presidente_secretario)])
+def delete_membro(membro_id: int, db: Session = Depends(get_db), dependencies=[Depends(check_senior_presidente_secretario)]):
     db_membro = membros_crud.delete_membro(db, membro_id=membro_id)
     if db_membro is None:
         raise HTTPException(status_code=404, detail="Membro not found")

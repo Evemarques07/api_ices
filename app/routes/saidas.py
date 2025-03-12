@@ -6,10 +6,11 @@ from sqlalchemy.orm import Session
 from app.crud import saidas as saidas_crud
 from app.schemas import saidas as saidas_schemas
 from database import get_db
+from app.core.security import check_senior_presidente_tesoureiro_patrimonio
 
 router = APIRouter()
 
-@router.post("/", response_model=saidas_schemas.Saida)
+@router.post("/", response_model=saidas_schemas.Saida, dependencies=[Depends(check_senior_presidente_tesoureiro_patrimonio)])
 def create_saida(saida: saidas_schemas.SaidaCreate, db: Session = Depends(get_db)):
     return saidas_crud.create_saida(db=db, saida=saida)
 
@@ -25,14 +26,14 @@ def read_saida(saida_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Saida not found")
     return db_saida
 
-@router.put("/{saida_id}", response_model=saidas_schemas.Saida)
+@router.put("/{saida_id}", response_model=saidas_schemas.Saida, dependencies=[Depends(check_senior_presidente_tesoureiro_patrimonio)])
 def update_saida(saida_id: int, saida: saidas_schemas.SaidaUpdate, db: Session = Depends(get_db)):
     db_saida = saidas_crud.update_saida(db, saida_id=saida_id, saida_update=saida)
     if db_saida is None:
         raise HTTPException(status_code=404, detail="Saida not found")
     return db_saida
 
-@router.delete("/{saida_id}")
+@router.delete("/{saida_id}", dependencies=[Depends(check_senior_presidente_tesoureiro_patrimonio)])
 def delete_saida(saida_id: int, db: Session = Depends(get_db)):
     db_saida = saidas_crud.delete_saida(db, saida_id=saida_id)
     if db_saida is None:

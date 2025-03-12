@@ -6,10 +6,11 @@ from sqlalchemy.orm import Session
 from app.crud import meal as meal_crud
 from app.schemas import meal as meal_schemas
 from database import get_db
+from app.core.security import check_senior_presidente_secretario
 
 router = APIRouter()
 
-@router.post("/", response_model=meal_schemas.Meal)
+@router.post("/", response_model=meal_schemas.Meal, dependencies=[Depends(check_senior_presidente_secretario)])
 def create_meal(meal: meal_schemas.MealCreate, db: Session = Depends(get_db)):
     return meal_crud.create_meal(db=db, meal=meal)
 
@@ -25,14 +26,14 @@ def read_meal(meal_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Meal not found")
     return db_meal
 
-@router.put("/{meal_id}", response_model=meal_schemas.Meal)
+@router.put("/{meal_id}", response_model=meal_schemas.Meal, dependencies=[Depends(check_senior_presidente_secretario)])
 def update_meal(meal_id: int, meal: meal_schemas.MealUpdate, db: Session = Depends(get_db)):
     db_meal = meal_crud.update_meal(db, meal_id=meal_id, meal_update=meal)
     if db_meal is None:
         raise HTTPException(status_code=404, detail="Meal not found")
     return db_meal
 
-@router.delete("/{meal_id}")
+@router.delete("/{meal_id}", dependencies=[Depends(check_senior_presidente_secretario)])
 def delete_meal(meal_id: int, db: Session = Depends(get_db)):
     db_meal = meal_crud.delete_meal(db, meal_id=meal_id)
     if db_meal is None:
