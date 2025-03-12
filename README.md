@@ -14,7 +14,7 @@ Uma API RESTful construída com FastAPI para gerenciar informações de membros,
 Navegue até o diretório do projeto no terminal e crie um ambiente virtual:
 
 ```bash
-python3 -m venv venv  # ou python -m venv venv
+python -m venv venv
 ```
 
 ### 2. Ativar o Ambiente Virtual
@@ -46,7 +46,7 @@ Substitua `ices` pelo nome que você escolher. Lembre-se de atualizar o arquivo 
 Crie um arquivo `.env` na raiz do projeto com o seguinte conteúdo, adaptando as credenciais do banco de dados:
 
 ```
-DATABASE_URL=mysql+pymysql://'seu usuário':'sua senha'@localhost/'banco de dados que foi criado'
+DATABASE_URL=mysql+pymysql://seu_usuario:sua_senha@localhost/banco_de_dados_criado
 SECRET_KEY="sua chave secreta"
 ALGORITHM="HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES=30
@@ -94,7 +94,7 @@ prepend_sys_path = .
 
 version_path_separator = os
 
-sqlalchemy.url = mysql+pymysql://'seu usuário':'sua senha'@localhost/'banco de dados que foi criado'
+sqlalchemy.url = mysql+pymysql://seu_usuario:sua_senha@localhost/banco_de_dados_criado
 
 [post_write_hooks]
 [loggers]
@@ -193,6 +193,8 @@ else:
 
 Para criar as tabelas no banco de dados, execute os seguintes comandos do Alembic:
 
+**Observação:** Antes de executar as migrações, certifique-se de que a pasta `versions` existe dentro da pasta `alembic`. Se não existir, crie-a manualmente.
+
 ```bash
 alembic upgrade head
 ```
@@ -204,13 +206,15 @@ alembic revision --autogenerate -m "Descrição da alteração"
 alembic upgrade head
 ```
 
+````
+
 ### 8. Executar a Aplicação
 
 Execute a aplicação FastAPI com Uvicorn:
 
 ```bash
 uvicorn main:app --reload
-```
+````
 
 ### 9. Acessar a Documentação da API
 
