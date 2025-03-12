@@ -280,4 +280,6 @@ Este guia fornece o básico para configurar e executar a sua API. Adapte-o de ac
 *   **Segurança:**  Reforce a importância de usar uma `SECRET_KEY` segura em produção.
 *   **Credenciais:** Deixe claro que as credenciais do banco de dados no `.env` devem ser mantidas em segredo e nunca commitadas no Git.
 *   **Adaptação:** Incentive os usuários a adaptar a documentação às suas necessidades.
+
+**Nota sobre Meal:** *Meal é a sigla de Mesa Executiva Administrativa Local, ou seja, a liderança local da igreja que pode ser composta por presidente, secretário, tesoureiro, diácono, entre outros.*
 ```
