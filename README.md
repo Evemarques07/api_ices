@@ -94,7 +94,7 @@ prepend_sys_path = .
 
 version_path_separator = os
 
-sqlalchemy.url = mysql+pymysql://evemarques:EveNy8191@localhost/ices
+sqlalchemy.url = mysql+pymysql://'seu usuário':'sua senha'@localhost/'banco de dados que foi criado'
 
 [post_write_hooks]
 [loggers]
