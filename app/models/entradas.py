@@ -28,3 +28,6 @@ class Entrada(Base):
 
     # Relacionamentos
     membro = relationship("Membro", back_populates="entradas")
+
+    def __repr__(self):
+        return f"<Entrada(idEntrada={self.idEntrada}, tipo={self.tipo}, idMembro={self.idMembro})>"
