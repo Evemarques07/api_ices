@@ -213,7 +213,7 @@ alembic upgrade head
 Execute a aplicação FastAPI com Uvicorn:
 
 ```bash
-uvicorn main:app --host 0.0.0.0 --port 8000
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ````
 
 ### 9. Acessar a Documentação da API
