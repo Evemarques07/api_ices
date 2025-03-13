@@ -7,7 +7,7 @@ from app.crud import usuarios as usuarios_crud
 from app.crud import membros as membros_crud
 from app.schemas import usuarios as usuarios_schemas
 from database import get_db
-from app.core.security import check_senior_presidente_secretario
+from app.core.security import check_senior_presidente_secretario, get_current_user
 
 router = APIRouter()
 
@@ -38,6 +38,13 @@ def read_usuario(usuario_id: int, db: Session = Depends(get_db)):
 @router.put("/{usuario_id}", response_model=usuarios_schemas.Usuario, dependencies=[Depends(check_senior_presidente_secretario)])
 def update_usuario(usuario_id: int, usuario: usuarios_schemas.UsuarioCreate, db: Session = Depends(get_db)):
     db_usuario = usuarios_crud.update_usuario(db, usuario_id=usuario_id, usuario_update=usuario)
+    if db_usuario is None:
+        raise HTTPException(status_code=404, detail="Usuario not found")
+    return db_usuario
+
+@router.patch("/{usuario_id}", response_model=usuarios_schemas.Usuario)
+def update_usuario_partial(usuario_id: int, usuario: usuarios_schemas.UsuarioUpdatePartial, db: Session = Depends(get_db)):
+    db_usuario = usuarios_crud.update_usuario_partial(db, usuario_id=usuario_id, usuario_update=usuario)
     if db_usuario is None:
         raise HTTPException(status_code=404, detail="Usuario not found")
     return db_usuario

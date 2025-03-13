@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic import BaseModel
 
 class UsuarioBase(BaseModel):
@@ -22,3 +23,7 @@ class TokenData(BaseModel):
     nomeCompleto: str | None = None
     cpf: str | None = None
     cargo: str | None = None
+
+class UsuarioUpdatePartial(BaseModel):
+    login: Optional[str] = None
+    password: Optional[str] = None

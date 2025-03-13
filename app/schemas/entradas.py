@@ -10,6 +10,7 @@ class TipoEntrada(str, Enum):
     Ofertas_Missionarias = "Ofertas_Missionarias"
     Campanhas = "Campanhas"
     Eventos = "Eventos"
+    Projetos = "Projetos"
     Venda_Materiais = "Venda_Materiais"
     Doacoes_Empresas = "Doacoes_Empresas"
     Parcerias_Ongs = "Parcerias_Ongs"
@@ -26,7 +27,7 @@ class EntradaBase(BaseModel):
     observacao: Optional[str] = None
 
 # Para criação de entradas
-class EntradaCreate(EntradaBase):
+class EntradaCreate(EntradaBase):   
     pass
 
 # Para atualização de entradas

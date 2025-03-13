@@ -9,6 +9,7 @@ class TipoEntrada(enum.Enum):
     Ofertas_Missionarias = "Ofertas_Missionarias"
     Campanhas = "Campanhas"
     Eventos = "Eventos"
+    Projetos = "Projetos"
     Venda_Materiais = "Venda_Materiais"
     Doacoes_Empresas = "Doacoes_Empresas"
     Parcerias_Ongs = "Parcerias_Ongs"

@@ -32,6 +32,20 @@ def update_usuario(db: Session, usuario_id: int, usuario_update: usuarios_schema
         db.refresh(db_usuario)
     return db_usuario
 
+def update_usuario_partial(db: Session, usuario_id: int, usuario_update: usuarios_schemas.UsuarioUpdatePartial):
+    db_usuario = get_usuario(db, usuario_id)
+    if db_usuario:
+        if usuario_update.login is not None:
+            db_usuario.login = usuario_update.login
+        if usuario_update.password is not None:
+            hashed_password = get_password_hash(usuario_update.password)
+            db_usuario.password = hashed_password
+
+        db.add(db_usuario)
+        db.commit()
+        db.refresh(db_usuario)
+    return db_usuario
+
 def delete_usuario(db: Session, usuario_id: int):
     db_usuario = get_usuario(db, usuario_id)
     if db_usuario:

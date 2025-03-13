@@ -11,6 +11,7 @@ from decouple import config
 sys.path.append(os.getcwd())
 
 from app.models import membros, cargos, usuarios, meal, entradas, saidas
+from database import Base
 
 config_alembic = context.config
 
