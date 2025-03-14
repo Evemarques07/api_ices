@@ -7,7 +7,7 @@ from app.crud import usuarios as usuarios_crud
 from app.crud import membros as membros_crud
 from app.schemas import usuarios as usuarios_schemas
 from database import get_db
-from app.core.security import check_senior_presidente_secretario, get_current_user
+from app.core.security import check_senior_presidente_secretario, check_allowed_cargos
 
 router = APIRouter()
 
@@ -55,3 +55,16 @@ def delete_usuario(usuario_id: int, db: Session = Depends(get_db)):
     if db_usuario is None:
         raise HTTPException(status_code=404, detail="Usuario not found")
     return {"ok": True}
+
+@router.get("/capitalize/{usuario_id}", dependencies=[Depends(check_allowed_cargos)])
+def capitalize_login(usuario_id: int, db: Session = Depends(get_db)):
+    """
+    Retorna o login do usuário com cada nome capitalizado.
+    """
+    db_usuario = usuarios_crud.get_usuario(db, usuario_id=usuario_id)
+    if db_usuario is None:
+        raise HTTPException(status_code=404, detail="Usuario not found")
+
+    login = db_usuario.login
+    capitalized_login = " ".join(word.capitalize() for word in login.split())
+    return {"capitalized_login": capitalized_login}

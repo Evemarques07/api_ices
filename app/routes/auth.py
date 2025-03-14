@@ -27,7 +27,7 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
             headers={"WWW-Authenticate": "Bearer"},
         )
     membro = membros_crud.get_membro(db, user.idMembro)
-    cargo = "membro"
+    cargo = "Membro"
 
     if membro:
         for m in membro.meals:
@@ -35,6 +35,7 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
 
     access_token_expires = timedelta(minutes=security.ACCESS_TOKEN_EXPIRE_MINUTES)
     subject = {
+            "idUser": user.idUser,
             "idMembro": user.idMembro,
             "nomeCompleto": membro.nomeCompleto if membro else None,
             "cpf": membro.cpf if membro else None,

@@ -20,12 +20,13 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/token")
 async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        id_user: int = payload.get("idUser")
         id_membro: int = payload.get("idMembro")
         nome_completo: str = payload.get("nomeCompleto")
         cpf: str = payload.get("cpf")
         cargo: str = payload.get("cargo")
 
-        if id_membro is None or nome_completo is None or cpf is None or cargo is None:
+        if id_user is None or id_membro is None or nome_completo is None or cpf is None or cargo is None:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Could not validate credentials",
@@ -37,7 +38,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = De
             detail="Could not validate credentials",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    user = {"idMembro": id_membro, "nomeCompleto": nome_completo, "cpf": cpf, "cargo": cargo}
+    user = {"idUser": id_user, "idMembro": id_membro, "nomeCompleto": nome_completo, "cpf": cpf, "cargo": cargo}
     return user
 
 def check_senior_presidente_secretario(current_user: dict = Depends(get_current_user)):
@@ -51,6 +52,15 @@ def check_senior_presidente_secretario(current_user: dict = Depends(get_current_
 
 def check_senior_presidente_tesoureiro_patrimonio(current_user: dict = Depends(get_current_user)):
     allowed_cargos = ["Senior", "Presidente", "Tesoureiro", "Vice-tesoureiro", "Diretor de patrimonio"]
+    if current_user["cargo"] not in allowed_cargos:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Insufficient privileges",
+        )
+    return current_user
+
+def check_allowed_cargos(current_user: dict = Depends(get_current_user)):
+    allowed_cargos = ["Senior", "Presidente", "Secretário", "Vice-secretário", "Tesoureiro", "Vice-tesoureiro", "Diretor de patrimonio", "Membro"]
     if current_user["cargo"] not in allowed_cargos:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,

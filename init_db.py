@@ -30,15 +30,15 @@ def init_db():
             # Criar o membro "Adão"
             membro_adao = membros.Membro(
                 nomeCompleto="Adão",
-                cpf="11111111111",  # CPF fictício
-                dataNascimento="1990-01-01",  # Data de nascimento fictícia
-                telefone="11-1111-1111",  # Telefone fictício
+                cpf="11111111111",
+                dataNascimento="1990-01-01",
+                telefone="1111111111",
                 rua="Rua Principal",
                 numero="1",
                 bairro="Centro",
                 cidade="Cidade",
                 naturalidade="Local",
-                dataInclusao="2023-01-01"  # Data fictícia
+                dataInclusao="2023-01-01"
             )
             db.add(membro_adao)
             db.commit()

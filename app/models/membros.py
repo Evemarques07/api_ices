@@ -22,6 +22,10 @@ class Membro(Base):
 
     # Relacionamentos (se houver)
     usuarios = relationship("Usuario", back_populates="membro")
-    meals = relationship("Meal", back_populates="membro")
+    meals = relationship("Meal", back_populates="membro")  # ou liderancas
     entradas = relationship("Entrada", back_populates="membro")
     saidas = relationship("Saida", back_populates="membro")
+    avisos = relationship("Aviso", back_populates="membro")  # Adicione esta linha
+
+    def __repr__(self):
+        return f"<Membro(idMembro={self.idMembro}, nomeCompleto='{self.nomeCompleto}')>"

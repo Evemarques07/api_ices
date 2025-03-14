@@ -10,7 +10,11 @@ from decouple import config
 
 sys.path.append(os.getcwd())
 
-from app.models import membros, cargos, usuarios, meal, entradas, saidas
+try:
+    from app.models import membros, cargos, usuarios, meal, entradas, saidas, avisos
+    print("Importação dos modelos bem-sucedida!")
+except ImportError as e:
+    print(f"Erro ao importar modelos: {e}")
 from database import Base
 
 config_alembic = context.config
@@ -46,16 +50,17 @@ def run_migrations_offline() -> None:
         context.run_migrations()
 
 def run_migrations_online() -> None:
-    """Run migrations in 'online' mode.
+    """Run migrations in 'online' mode."""
 
-    In this scenario we need to create an Engine
-    and associate a connection with the context.
-    """
-    connectable = create_engine(get_url())
+    # Obtenha a URL do banco de dados usando decouple
+    database_url = config("DATABASE_URL")
+
+    # Crie o engine usando a URL obtida
+    connectable = create_engine(database_url)
 
     with connectable.connect() as connection:
         context.configure(
-            connection=connection, target_metadata=target_metadata 
+            connection=connection, target_metadata=target_metadata
         )
 
         with context.begin_transaction():
